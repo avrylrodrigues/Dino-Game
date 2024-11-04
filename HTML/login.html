@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>The Dino Game | Login</title>
+    <link rel="stylesheet" type="text/css" href="..\CSS\styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+</head>
+<body style="background-color: #18408f;">
+    <div class="categorynavbar-right">
+        <h2 class="logo">The Dino Game</h2>
+        <ul>
+            <li><a href="..\HTML\index.html">Home</a></li>
+            <li><a href="..\HTML\leaderboard.html">Leaderboard</a></li>
+            <li><a href="..\HTML\login.html">Login</a></li>
+            <li><a href="..\HTML\signup.html">Sign Up</a></li>
+        </ul>
+    </div>
+    <div class="login-content">
+        <div class="login-box">
+            <h1>Log In</h1>
+            <br>
+            <!-- Username input field -->
+            <input type="text" id="username" placeholder="Username *">
+            <br><br>
+            <!-- Password input field -->
+            <input type="password" id="password" placeholder="Password *">
+            <br>
+            <!-- Forgot password link -->
+            <div class="forgot-password">
+                <a href="..\HTML\forgotpassword.html">Forgot Password?</a>
+            </div>
+            <p>
+                <button id="loginbutton" class="login-button">Login</button>
+            </p>
+            <p class="noacc-button">
+                <a href="..\HTML\signup.html">Don't have an account? Sign Up</a>
+            </p>
+        </div>
+    </div>
+    <img id="dino" src="..\Images\dino.png" alt="dino baby">
+    <img id="tree" src="..\Images\tree.png" alt="tree">
+    <div class="footer"></div>
+
+    <!-- Login content -->
+    <script>
+        // Check if a user is already logged in when the page loads
+        window.onload = function() {
+            checkLogin();
+        };
+        document.getElementById('loginbutton').addEventListener('click', function(event) {
+            event.preventDefault();
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            // Check if all fields are filled
+            if (username === "" || password === "") {
+                alert("You haven't filled all the required fields...");
+                return;
+            } else {
+                login();
+            }
+        });
+        // Function to check if a user is already logged in
+        function checkLogin() {
+            // If a logged-in username is found in session storage
+            if (sessionStorage.loggedInUsername !== undefined) {
+                let usrObj = JSON.parse(localStorage[sessionStorage.loggedInUsername]);
+                alert(usrObj.nickname + " is already logged in.");
+                window.location.href = "../HTML/game.html";
+            }
+        }
+        // Function to validate login credentials
+        function login() {
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+            // Check if the username exists in localStorage
+            if (localStorage[username] === undefined) {
+                alert("Invalid username. Are you sure you have an account?");
+                return;
+            } else {
+                let usrObj = JSON.parse(localStorage[username]);
+                // If the password matches the one in localStorage
+                if (password === usrObj.password) {
+                    alert(usrObj.nickname + " successfully logged in. Enjoyyyy!");
+                    // Store the logged-in username in session storage
+                    sessionStorage.setItem("loggedInUsername", usrObj.username);
+                    window.location.href = "../HTML/game.html";
+                } else {
+                    alert("Incorrect password. Please try again.");
+                }
+            }
+        }
+    </script>
+</body>
+</html>

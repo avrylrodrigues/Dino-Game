@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>The Dino Game | Sign Up</title>
+    <link rel="stylesheet" type="text/css" href="..\CSS\styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+</head>
+<body style="background-color: #18408f;">
+    <div class="categorynavbar-right">
+        <h2 class="logo">The Dino Game</h2>
+        <ul>
+            <li><a href="..\HTML\index.html">Home</a></li>
+            <li><a href="..\HTML\leaderboard.html">Leaderboard</a></li>
+            <li><a href="..\HTML\login.html">Login</a></li>
+            <li><a href="..\HTML\signup.html">Sign Up</a></li>
+        </ul>
+    </div>
+
+    <!-- Sign up content -->
+    <div class="signup-content">
+        <div class="signup-box">
+            <h1>Sign Up</h1>
+            <br>
+            <!-- Input field for username -->
+            <input type="text" id="username" placeholder="Username *" required>
+            <br> 
+            <!-- Input field for password -->
+            <input type="password" id="password" placeholder="Password *" required>
+            <br>
+            <!-- Input field for nickname -->
+            <input type="text" id="nickname" placeholder="Nickname *" required>
+            <br>
+            <p>
+                <button id="signupbutton" class="signup-button">Sign In</button>
+            </p>
+            <p class="acc-button">
+                <a href="..\HTML\login.html">Already have an account? Log In</a>
+            </p>
+        </div>
+    </div>
+    <img id="dino" src="..\Images\dino.png" alt="dino baby">
+    <img id="tree" src="..\Images\tree.png" alt="tree">
+    <div class="footer"></div>
+
+    <!-- Sign up content -->
+    <script>
+        document.getElementById('signupbutton').addEventListener('click', function(event) {
+            // Retrieve values from input fields
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            var nickname = document.getElementById('nickname').value;
+            // Check if any fields are empty
+            if (username === "" || password === "" || nickname === "") {
+                event.preventDefault();
+                alert("You haven't filled all the required fields...");
+                return;
+            }
+            // Check if the username or nickname already exists
+            if (isUserExist(username, nickname)) {
+                alert("Username or nickname already exists. Please choose a different one.");
+                return;
+            }
+            // If validation passes, store the new user
+            storeUser();
+        });
+        // Function to check if a username or nickname already exists in localStorage
+        function isUserExist(username, nickname) {
+            for (var key in localStorage) {
+                let storedUser = JSON.parse(localStorage.getItem(key));
+                if (storedUser) {
+                    // If the username or nickname matches an existing user
+                    if (storedUser.username === username || storedUser.nickname === nickname) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        // Function to store the new user in localStorage
+        function storeUser(){
+            // Create a user object with username, password, nickname, and initial distance
+            var usrObject = {
+                username: document.getElementById("username").value,
+                password: document.getElementById("password").value,
+                nickname: document.getElementById("nickname").value,
+                // Initial distance for the user
+                distance: 0
+            };
+            // Store the user object in localStorage using the username as the key
+            localStorage.setItem(usrObject.username, JSON.stringify(usrObject));
+            alert("You've successfully created an account! Have fun!!");
+        }
+    </script>
+</body>
+</html>

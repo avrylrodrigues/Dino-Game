@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>The Dino Game | Leaderboard</title>
+	<link rel="stylesheet" type="text/css" href="..\CSS\styles.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8">
+</head>
+<body style="background-color: #18408f;">
+	<div class="categorynavbar-right">
+		<h2 class="logo">The Dino Game</h2>
+		<ul>
+			<li><a href="..\HTML\index.html">Home</a></li>
+			<li><a href="..\HTML\leaderboard.html">Leaderboard</a></li>
+			<li><a href="..\HTML\login.html">Login</a></li>
+			<li><a href="..\HTML\signup.html">Sign Up</a></li>
+		</ul>
+	</div>
+	<div class="leaderboard-content">
+		<h1>Leaderboard</h1>
+		<!-- Table for displaying leaderboard ranks, usernames, and distances -->
+		<table id="leaderboard-table">
+			<thead>
+				<tr>
+					<th>Rank</th>
+					<th>User</th>
+					<th>Distance</th>
+				</tr>
+			</thead>
+			<tbody id="leaderboard-body">
+			</tbody>
+		</table>
+	</div>
+	<img id="dino" src="..\Images\dino.png" alt="dino baby">
+	<img id="tree" src="..\Images\tree.png" alt="tree">
+	<div class="footer"></div>
+	<script>
+		// Function to load and display leaderboard data from localStorage
+		function loadLeaderboard() {
+			var users = [];
+			for (var i = 0; i < localStorage.length; i++) {
+				var key = localStorage.key(i);
+				var user = JSON.parse(localStorage.getItem(key));
+				// Add user to the list if they have a nickname and distance
+				if (user && user.nickname && user.distance !== undefined) {
+					users.push(user);
+				}
+			}
+			// Sort users array by distance in descending order
+			for (var i = 0; i < users.length; i++) {
+				for (var j = i + 1; j < users.length; j++) {
+					if (users[i].distance < users[j].distance) {
+						var temp = users[i];
+						users[i] = users[j];
+						users[j] = temp;
+					}
+				}
+			}
+			// Clear any existing rows in the leaderboard table body
+			var leaderboardBody = document.getElementById("leaderboard-body");
+			leaderboardBody.innerHTML = "";
+			// Generate and insert a new row for each user
+			for (var i = 0; i < users.length; i++) {
+				var row = "<tr>";
+				// Display rank
+				row += "<td>" + (i + 1) + "</td>";
+				// Display user nickname
+				row += "<td>" + users[i].nickname + "</td>";
+				// Display distance
+				row += "<td>" + users[i].distance + " km</td>";
+				row += "</tr>";
+				leaderboardBody.innerHTML += row;
+			}
+		}
+		// Run loadLeaderboard function when the window loads
+		window.onload = function() {
+			loadLeaderboard();
+		};
+	</script>
+</body>
+</html>
